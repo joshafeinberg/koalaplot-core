@@ -17,6 +17,7 @@ repositories {
     google()
     mavenCentral()
     maven("https://maven.pkg.jetbrains.space/public/p/compose/dev")
+    maven("https://maven.pkg.jetbrains.space/kotlin/p/wasm/experimental")
 }
 
 dependencies {
@@ -32,12 +33,15 @@ kotlin {
     js(IR) {
         browser()
     }
+    wasm {
+        browser()
+    }
     android {
         publishLibraryVariants("release")
     }
-    iosX64()
+    /*iosX64()
     iosArm64()
-    iosSimulatorArm64()
+    iosSimulatorArm64()*/
 
     sourceSets {
         val commonMain by getting {
@@ -47,7 +51,7 @@ kotlin {
                 implementation(compose.material3)
                 implementation(compose.ui)
                 implementation(compose.animation)
-                implementation(KotlinX.coroutines.core)
+                // implementation(KotlinX.coroutines.core)
             }
         }
 
@@ -74,7 +78,7 @@ kotlin {
             }
         }
 
-        val iosX64Main by getting
+        /*val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
         create("iosMain") {
@@ -86,7 +90,7 @@ kotlin {
             dependencies {
 
             }
-        }
+        }*/
     }
 }
 
@@ -103,8 +107,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     publishing {
@@ -136,7 +140,7 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         freeCompilerArgs = freeCompilerArgs + listOf(
             "-opt-in=kotlin.RequiresOptIn"
         )
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 
     detekt {
