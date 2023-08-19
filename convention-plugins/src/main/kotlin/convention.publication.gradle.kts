@@ -79,6 +79,28 @@ publishing {
             }
         }
     }
+
+    repositories {
+        if (
+            hasProperty("sonatypeUsername") &&
+            hasProperty("sonatypePassword") &&
+            hasProperty("sonatypeSnapshotUrl") &&
+            hasProperty("sonatypeReleaseUrl")
+        ) {
+            maven {
+                name = "githubPackages"
+                val url = when {
+                    "SNAPSHOT" in version.toString() -> property("sonatypeSnapshotUrl")
+                    else -> property("sonatypeReleaseUrl")
+                } as String
+                setUrl(url)
+                credentials {
+                    username = property("sonatypeUsername") as String
+                    password = property("sonatypePassword") as String
+                }
+            }
+        }
+    }
 }
 
 nexusPublishing {

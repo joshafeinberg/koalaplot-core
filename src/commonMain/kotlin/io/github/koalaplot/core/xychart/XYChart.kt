@@ -65,7 +65,8 @@ public data class LineStyle(
     val pathEffect: PathEffect? = null,
     val alpha: Float = 1.0f,
     val colorFilter: ColorFilter? = null,
-    val blendMode: BlendMode = DefaultBlendMode
+    val blendMode: BlendMode = DefaultBlendMode,
+    val filledArea: Boolean = false,
 )
 
 /**
