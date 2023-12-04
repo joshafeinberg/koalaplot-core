@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
@@ -30,22 +31,14 @@ import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.roundToInt
 
-/**
- * Default implementation of a BarChartEntry.
- * @param X The type of the x-axis values
- * @param Y The type of the y-axis values
- */
+@Deprecated("Use DefaultBarPlotEntry", ReplaceWith("DefaultBarPlotEntry"))
 public data class DefaultBarChartEntry<X, Y>(
     public override val xValue: X,
     public override val yMin: Y,
     public override val yMax: Y,
 ) : BarChartEntry<X, Y>
 
-/**
- * An interface that defines a data element to be plotted on a Bar chart.
- * @param X The type of the x-axis values
- * @param Y The type of the y-axis values
- */
+@Deprecated("Use BarPlotEntry", ReplaceWith("BarPlotEntry"))
 public interface BarChartEntry<X, Y> {
     /**
      * X-axis value at which the bar should be plotted
@@ -65,7 +58,7 @@ public interface BarChartEntry<X, Y> {
 
 public interface BarScope : HoverableElementAreaScope
 
-private class BarScopeImpl(val hoverableElementAreaScope: HoverableElementAreaScope) :
+internal class BarScopeImpl(val hoverableElementAreaScope: HoverableElementAreaScope) :
     BarScope, HoverableElementAreaScope by hoverableElementAreaScope
 
 /**
@@ -94,6 +87,7 @@ public typealias VerticalBarComposable<E> = @Composable BarScope.(series: Int, i
  * @param maxBarGroupWidth The fraction of space between adjacent x-axis bars or bar groups that
  * may be used. Must be between 0 and 1, defaults to 0.9.
  */
+@Deprecated("Replace with either GroupedVerticalBarPlot, VerticalBarPlot, or VerticalBarStackPlot")
 @Composable
 public fun <X, Y, E : BarChartEntry<X, Y>> XYChartScope<X, Y>.VerticalBarChart(
     series: List<List<E>>,
@@ -222,4 +216,27 @@ public fun BarScope.DefaultVerticalBar(
             .clip(shape)
             .hoverableElement(hoverElement)
     )
+}
+
+/**
+ * A simplified DefaultVerticalBar that uses a Solid Color [color] and default [RectangleShape].
+ */
+@Composable
+public fun BarScope.DefaultVerticalBar(
+    color: Color,
+    shape: Shape = RectangleShape,
+    border: BorderStroke? = null,
+) {
+    DefaultVerticalBar(SolidColor(color), shape = shape, border = border)
+}
+
+/**
+ * Factory function to create a Composable that emits a solid colored bar.
+ */
+public fun solidBar(
+    color: Color,
+    shape: Shape = RectangleShape,
+    border: BorderStroke? = null,
+): @Composable BarScope.() -> Unit = {
+    DefaultVerticalBar(SolidColor(color), shape = shape, border = border)
 }

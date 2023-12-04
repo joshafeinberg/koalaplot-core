@@ -1,4 +1,4 @@
-package io.github.koalaplot.core.xychart
+package io.github.koalaplot.core.xygraph
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -134,7 +134,7 @@ public class LinearAxisModel constructor(
             }
 
             // create ticks after last major tick, if still space in the range
-            var i = 0
+            var i = 1
             do {
                 val nextTick = majorTickValues.last() + minorIncrement * i
                 if (nextTick in currentRange) {
@@ -144,7 +144,7 @@ public class LinearAxisModel constructor(
             } while (nextTick in currentRange)
 
             // create ticks before first major tick. if still space in the range
-            i = 0
+            i = 1
             do {
                 val nextTick = majorTickValues.first() - minorIncrement * i
                 if (nextTick in currentRange) {
@@ -247,7 +247,15 @@ public fun rememberLinearAxisModel(
     minorTickCount: Int = 4,
     allowZooming: Boolean = true,
     allowPanning: Boolean = true,
-): LinearAxisModel = remember {
+): LinearAxisModel = remember(
+    range,
+    zoomRangeLimit,
+    minimumMajorTickIncrement,
+    minimumMajorTickSpacing,
+    minorTickCount,
+    allowZooming,
+    allowPanning
+) {
     LinearAxisModel(
         range,
         zoomRangeLimit,
